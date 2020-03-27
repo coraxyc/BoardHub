@@ -1,17 +1,86 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+function PostIt(props) {
+  return (
+    <button className="postit" onClick={props.onClick}>
+      {props.value}
+    </button>
+  );
+}
+
+class Board extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      postits: []
+    };
+
+    this.idCounter = 0;
+  }
+
+  renderInitialPostIt(i) {
+    if(i === '+') {
+      return (
+        <PostIt
+          value={i} 
+          onClick={() => this.addPostIt(i)}
+        />
+      );
+    }
+  }
+
+  addPostIt() {
+    this.idCounter += 1;
+    this.setState({
+      postits: [...this.state.postits, 
+        { id: this.idCounter,
+          title: this.idCounter,
+          text: "abc " + (this.idCounter)}]
+    });
+  }
+
+  removeNthPostIt(id) {
+    const currState = this.state;
+    const index = currState.postits.findIndex(p => p.id === id);
+    currState.postits.splice(index, 1);
+    this.setState(currState);
+  }
+
+  render() {
+    const postits = this.state.postits;
+    const listPostits = postits.map(postit => 
+      <PostIt 
+        key={postit.id.toString()} 
+        value={postit.text} 
+        onClick={() => this.removeNthPostIt(postit.id)} 
+        />
+    );
+    return (
+      <div>
+        <div className="board-row">
+            {this.renderInitialPostIt('+')}
+            {listPostits}
+        </div>
+      </div>
+    );
+  }
+}
+
+class Bulletin extends React.Component {
+  render() {
+    return (
+      <div className="bulletin">
+        <div className="bulletin-board">
+          <Board/>
+        </div>
+      </div>
+    );
+  }
+}
+
+ReactDOM.render( 
+  <Bulletin/>, 
   document.getElementById('root')
 );
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
