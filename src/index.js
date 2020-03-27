@@ -2,11 +2,33 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
+
+import { ReactComponent as IconEdit } from './assets/icon-edit.svg';
+import { ReactComponent as IconFilePlus } from './assets/icon-file-plus.svg';
+import { ReactComponent as IconTrash } from './assets/icon-trash.svg';
+
+function PostItAddButton(props) {
+  return (
+    <div className="postit bg-blue center" onClick={props.onClick}>
+      <IconFilePlus className="icon-margin2 icon-medium"/>
+    </div>
+  );
+}
+
 function PostIt(props) {
   return (
-    <button className="postit" onClick={props.onClick}>
-      {props.value}
-    </button>
+    <div className="postit">
+      <div className="icon-row">
+        <IconTrash className="icon-margin2 icon-small icon-top icon-right" onClick={props.onClick}/>
+        <IconEdit className="icon-margin2 icon-small icon-top icon-right"/>
+      </div>
+      <div className="postit-title">
+        {props.title}
+      </div>
+      <div className="postit-body">
+        {props.body}
+      </div>
+    </div>
   );
 }
 
@@ -20,15 +42,12 @@ class Board extends React.Component {
     this.idCounter = 0;
   }
 
-  renderInitialPostIt(i) {
-    if(i === '+') {
-      return (
-        <PostIt
-          value={i} 
-          onClick={() => this.addPostIt(i)}
-        />
-      );
-    }
+  renderPostItAddButton() {
+    return (
+      <PostItAddButton
+        onClick={() => this.addPostIt()}
+      />
+    );
   }
 
   addPostIt() {
@@ -36,8 +55,8 @@ class Board extends React.Component {
     this.setState({
       postits: [...this.state.postits, 
         { id: this.idCounter,
-          title: this.idCounter,
-          text: "abc " + (this.idCounter)}]
+          title: "Title " + this.idCounter,
+          body: "Body " + (this.idCounter)}]
     });
   }
 
@@ -53,14 +72,15 @@ class Board extends React.Component {
     const listPostits = postits.map(postit => 
       <PostIt 
         key={postit.id.toString()} 
-        value={postit.text} 
+        title={postit.title}
+        body={postit.body}
         onClick={() => this.removeNthPostIt(postit.id)} 
-        />
+      />
     );
     return (
       <div>
         <div className="board-row">
-            {this.renderInitialPostIt('+')}
+            {this.renderPostItAddButton()}
             {listPostits}
         </div>
       </div>

@@ -24,6 +24,7 @@ body {
   height: 75vh;
   width: 50%;
   background-color: grey;
+  overflow-y: scroll;
 }
 
 ol, ul {
@@ -39,16 +40,55 @@ ol, ul {
 .postit {
   margin: 2%;
   background-color: lightgrey;
-  width: 27%;
+  width: 25%;
   height: 20vh;
   border: none;
-  padding: 0;
+  padding: 2%;
   float: left;
 }
 
-.postit-add {
-  background-color: blue;
+.bg-blue {
+  background-color: whitesmoke;
 }
+
+.postit-title {
+  margin-bottom: 5%;
+  font-size: 1.3em;
+  font-weight: bold;
+}
+
+.postit-body {
+
+}
+
+.icon-margin2 {
+  margin: 2%;
+}
+
+.icon-small {
+  width: 10%;
+  height: auto;
+}
+
+.icon-medium {
+  width: 30%;
+  height: auto;
+}
+
+.icon-right {
+  float: right;
+}
+
+.icon-top {
+  top: 5%;
+}
+
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
