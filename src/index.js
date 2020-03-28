@@ -15,21 +15,66 @@ function PostItAddButton(props) {
   );
 }
 
-function PostIt(props) {
-  return (
-    <div className="postit">
-      <div className="icon-row">
-        <IconTrash className="icon-trash icon-margin2 icon-small icon-top icon-right" onClick={props.onClick}/>
-        <IconEdit className="icon-edit icon-margin2 icon-small icon-top icon-right"/>
+class PostIt extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isEditEnabled: false,
+      title: this.props.title,
+      body: this.props.body
+    }
+  }
+
+  toggleEditing() {
+    this.setState({isEditEnabled: !this.state.isEditEnabled});
+  }
+
+  handleTextChange(field, event) {
+    if(event.target == null) {
+      return;
+    }
+    var object = {};
+    object[field] = event.target.value;
+    this.setState(object);
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+    this.toggleEditing();
+
+    var title = this.state.title.trim();
+    var body = this.state.body.trim();
+    console.log("handleSubmit");
+    console.log("title: " + title);
+    console.log("body: " + body);
+    var object = {id: this.props.id, title: this.state.title, body: this.state.body};
+    console.log(object);
+    this.props.savePostIt(this.props.id, object);
+  }
+
+  render() {
+    return (
+      <div className="postit">
+        <div className="icon-row">
+          <IconTrash className="icon-trash icon-margin2 icon-small icon-top icon-right" onClick={this.props.onRemove}/>
+          <IconEdit className="icon-edit icon-margin2 icon-small icon-top icon-right" onClick={this.toggleEditing.bind(this)}/>
+        </div>
+        <form className="postit-form" onSubmit={this.handleSubmit.bind(this)}>
+          <div className="postit-title">
+            <input type="text" value={this.state.title} disabled={!this.state.isEditEnabled} onChange={this.handleTextChange.bind(this, 'title')} />
+          </div>
+          <div className="postit-body">
+            <input type="text" value={this.state.body} disabled={!this.state.isEditEnabled} onChange={this.handleTextChange.bind(this, 'body')} />
+          </div>
+          { this.state.isEditEnabled ? <PostItSubmit/> : null }
+        </form>
       </div>
-      <div className="postit-title">
-        {props.title}
-      </div>
-      <div className="postit-body">
-        {props.body}
-      </div>
-    </div>
-  );
+    );
+  }
+}
+
+function PostItSubmit(props) {
+  return <input type="submit" value="Save" className="postit-submit"/>;
 }
 
 class Board extends React.Component {
@@ -39,6 +84,7 @@ class Board extends React.Component {
       postits: []
     };
 
+    this.isEditEnabled = false;
     this.idCounter = 0;
   }
 
@@ -60,10 +106,24 @@ class Board extends React.Component {
     });
   }
 
-  removeNthPostIt(id) {
+  removePostIt(id) {
     const currState = this.state;
     const index = currState.postits.findIndex(p => p.id === id);
     currState.postits.splice(index, 1);
+    this.setState(currState);
+  }
+
+  savePostIt(id, updatedPostIt) {
+    console.log("savePostIt");
+    console.log(id);
+    if(updatedPostIt == null) {
+      console.log("updatedPostIt is null");
+      return;
+    }
+    console.log(updatedPostIt);
+    const currState = this.state;
+    const index = currState.postits.findIndex(p => p.id === id);
+    currState.postits[index] = updatedPostIt;
     this.setState(currState);
   }
 
@@ -71,10 +131,13 @@ class Board extends React.Component {
     const postits = this.state.postits;
     const listPostits = postits.map(postit => 
       <PostIt 
-        key={postit.id.toString()} 
+        key={postit.id.toString()}
+        id={postit.id}
         title={postit.title}
         body={postit.body}
-        onClick={() => this.removeNthPostIt(postit.id)} 
+        onRemove={() => this.removePostIt(postit.id)}
+        onEdit={() => this.editPostIt(postit.id)}
+        savePostIt={this.savePostIt.bind(this)}
       />
     );
     return (
