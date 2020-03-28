@@ -65,6 +65,13 @@ ol, ul {
   margin: 2%;
 }
 
+.icon-trash:hover {
+  fill: rgb(238, 66, 66);
+}
+
+.icon-edit:hover {
+  fill: lightseagreen;
+}
 .icon-small {
   width: 10%;
   height: auto;

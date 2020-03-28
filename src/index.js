@@ -19,8 +19,8 @@ function PostIt(props) {
   return (
     <div className="postit">
       <div className="icon-row">
-        <IconTrash className="icon-margin2 icon-small icon-top icon-right" onClick={props.onClick}/>
-        <IconEdit className="icon-margin2 icon-small icon-top icon-right"/>
+        <IconTrash className="icon-trash icon-margin2 icon-small icon-top icon-right" onClick={props.onClick}/>
+        <IconEdit className="icon-edit icon-margin2 icon-small icon-top icon-right"/>
       </div>
       <div className="postit-title">
         {props.title}
