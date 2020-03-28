@@ -1,0 +1,35 @@
+.icon-margin2 {
+  margin: 2%;
+}
+  
+.icon-trash:hover {
+  fill: rgb(238, 66, 66);
+}
+
+.icon-edit:hover {
+  fill: lightseagreen;
+}
+
+.icon-small {
+  width: 10%;
+  height: auto;
+}
+
+.icon-medium {
+  width: 30%;
+  height: auto;
+}
+
+.icon-right {
+  float: right;
+}
+
+.icon-top {
+  top: 5%;
+}
+
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

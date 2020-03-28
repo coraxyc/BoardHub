@@ -1,0 +1,53 @@
+
+.postit {
+  margin: 2%;
+  background-color: lightgrey;
+  width: 25%;
+  height: 20vh;
+  border: none;
+  padding: 2%;
+  float: left;
+}
+
+.bg-blue {
+  background-color: whitesmoke;
+}
+
+.postit-input {
+  border: 1px solid rgb(18, 131, 202);
+  display: inline-block;
+  box-sizing: inherit;
+  margin: 0;
+  padding: 2%;
+  line-height: inherit;
+  vertical-align: inherit;
+  text-align: left;
+  color: inherit;
+  font: inherit;
+  background: none;
+}
+
+.input-title {
+  margin-bottom: 5%;
+  width: 65%;
+  font-size: 1.3em;
+  font-weight: bold;
+}
+
+.input-body {
+  width: 100%;
+  height: 100%;
+}
+
+textarea {
+  text-decoration: none;
+  resize: none;
+}
+
+textarea[disabled] {
+  border: 0;
+}
+
+input[disabled] {
+  border: 0;
+}

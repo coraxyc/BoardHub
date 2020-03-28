@@ -1,0 +1,13 @@
+.bulletin-board {
+  padding: 1vw;
+  height: 75vh;
+  width: 50%;
+  background-color: grey;
+  overflow-y: scroll;
+}
+
+.board-row:after {
+  clear: both;
+  content: "";
+  display: table;
+}
