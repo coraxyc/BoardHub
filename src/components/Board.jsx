@@ -22,6 +22,7 @@ class Board extends React.Component {
   
       this.isEditEnabled = false;
       this.idCounter = 0;
+      this.pinnedCounter = 0;
     }
   
     renderPostItAddButton() {
@@ -34,11 +35,15 @@ class Board extends React.Component {
   
     addPostIt() {
       this.idCounter += 1;
+      var date = new Date();
       this.setState({
         postits: [...this.state.postits, 
           { id: this.idCounter,
             title: "Title " + this.idCounter,
-            body: "Body " + (this.idCounter)}]
+            body: "Body " + (this.idCounter),
+            timestamp: date.getTime(),
+            isPinned: false
+          }]
       });
     }
   
@@ -63,6 +68,34 @@ class Board extends React.Component {
       this.setState(currState);
     }
   
+    togglePin(id) {
+      const currState = this.state;
+      const index = currState.postits.findIndex(p => p.id === id);
+      const currPostIt = currState.postits[index];
+
+      currState.postits.splice(index, 1);
+
+      if(currPostIt.isPinned) {
+        this.pinnedCounter -= 1;
+        currPostIt.isPinned = false;
+
+        currState.postits = [...currState.postits, currPostIt];
+        currState.postits.sort(function(a,b) { return a.timestamp - b.timestamp; });
+      } else {
+        this.pinnedCounter += 1;
+        currPostIt.isPinned = true;
+
+        var pinned = currState.postits.splice(0, this.pinnedCounter - 1);
+        pinned = [currPostIt, ...pinned];
+        pinned.sort(function(a,b) { return a.timestamp - b.timestamp; });
+        currState.postits = pinned.concat(currState.postits);
+      }
+
+      this.setState({
+        postits: currState.postits
+      });
+    }
+
     render() {
       const postits = this.state.postits;
       const listPostits = postits.map(postit => 
@@ -71,11 +104,15 @@ class Board extends React.Component {
           id={postit.id}
           title={postit.title}
           body={postit.body}
+          timestamp={postit.timestamp}
+          isPinned={postit.isPinned}
           onRemove={() => this.removePostIt(postit.id)}
           onEdit={() => this.editPostIt(postit.id)}
           savePostIt={this.savePostIt.bind(this)}
+          togglePin={() => this.togglePin(postit.id)}
         />
       );
+
       return (
         <div>
           <div className="board-row">

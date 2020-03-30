@@ -10,6 +10,22 @@
   fill: lightseagreen;
 }
 
+.icon-clip:hover {
+  fill: purple;
+}
+
+.fill-red {
+  fill: rgb(238, 66, 66);
+}
+
+.fill-lightseagreen {
+  fill: lightseagreen;
+}
+
+.fill-purple {
+  fill: purple;
+}
+
 .icon-small {
   width: 10%;
   height: auto;

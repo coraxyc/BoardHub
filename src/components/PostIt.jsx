@@ -4,6 +4,7 @@ import '../styles/icon.css';
 
 import { ReactComponent as IconTrash } from '../assets/icon-trash.svg';
 import { ReactComponent as IconEdit } from '../assets/icon-edit.svg';
+import { ReactComponent as IconClip } from '../assets/icon-clip.svg';
 
 class PostIt extends React.Component {
     constructor(props) {
@@ -61,7 +62,15 @@ class PostIt extends React.Component {
         <div className="postit">
           <div className="icon-row">
             <IconTrash className="icon-trash icon-margin2 icon-small icon-top icon-right" onClick={this.props.onRemove}/>
-            <IconEdit className="icon-edit icon-margin2 icon-small icon-top icon-right" onClick={this.toggleEditing.bind(this, true)}/>
+            { this.state.isEditEnabled ?  
+              <IconEdit className="icon-edit fill-lightseagreen icon-margin2 icon-small icon-top icon-right" onClick={this.toggleEditing.bind(this, true)}/> :  
+              <IconEdit className="icon-edit icon-margin2 icon-small icon-top icon-right" onClick={this.toggleEditing.bind(this, true)}/>
+            }
+           
+            { this.props.isPinned ? 
+              <IconClip className="icon-clip fill-purple icon-margin2 icon-small icon-top icon-right" onClick={this.props.togglePin}/> : 
+              <IconClip className="icon-clip icon-margin2 icon-small icon-top icon-right" onClick={this.props.togglePin}/>
+            }
           </div>
           <form className="postit-form" onSubmit={this.handleSubmit.bind(this)} onReset={this.handleReset.bind(this)}>
             <div className="postit-title">
